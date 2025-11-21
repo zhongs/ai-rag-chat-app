@@ -2,8 +2,8 @@
 
 import { db } from "@/lib/db";
 import { NewResourceParams, insertResourceSchema, resources } from "@/lib/db/schema/resources";
-import { embeddings as embeddingsTable, generateEmbeddings } from "@/lib/db/schema/embeddings";
-
+import { embeddings as embeddingsTable } from "@/lib/db/schema/embeddings";
+import { generateEmbeddings } from '@/lib/ai/embedding';
 /**
  * 创建资源并生成向量嵌入
  * @param input - 新资源参数，包含资源内容
