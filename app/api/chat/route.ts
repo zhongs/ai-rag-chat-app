@@ -2,6 +2,8 @@ import { convertToModelMessages, streamText, UIMessage, tool, stepCountIs } from
 import { createOpenAI } from "@ai-sdk/openai";
 import { z } from "zod";
 import { createResource } from "@/lib/actions/resources";
+import { findRelevantContent } from '@/lib/ai/embedding';
+
 
 // 创建 SiliconFlow 客户端
 const model = createOpenAI({
@@ -40,6 +42,13 @@ export async function POST(req: Request) {
           content: z.string().describe("要添加到知识库的内容或资源"),
         }),
         execute: async ({ content }) => createResource({ content }),
+      }),
+      getInformation: tool({
+        description: `从知识库中获取信息以回答问题。`,
+        inputSchema: z.object({
+          question: z.string().describe('用户的提问'),
+        }),
+        execute: async ({ question }) => findRelevantContent(question),
       }),
     },
   });
